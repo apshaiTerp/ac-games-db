@@ -1,0 +1,2 @@
+# ac-games-db
+This class is meant to store the required Interfaces for database calls.  While I don't expect to use more than MongoDB, I'm creating this class so I can swap out my implementations if needed
