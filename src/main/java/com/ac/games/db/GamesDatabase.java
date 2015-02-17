@@ -67,17 +67,6 @@ public interface GamesDatabase {
   public void updateBGGGameData(BGGGame game) throws ConfigurationException, DatabaseOperationException;
   
   /**
-   * This method should delete the provided {@link BGGGame} data from the database.  If the object does
-   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
-   * 
-   * @param game The {@link BGGGame} object to be deleted from the database.
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   * of the requested operation.
-   */
-  public void deleteBGGGameData(BGGGame game) throws ConfigurationException, DatabaseOperationException;
-    
-  /**
    * This method should delete the requested {@link BGGGame} data from the database.  If the object does
    * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
    * 
@@ -120,17 +109,6 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public void updateCSIPriceData(CoolStuffIncPriceData csiData) throws ConfigurationException, DatabaseOperationException;
-  
-  /**
-   * This method should delete the provided {@link CoolStuffIncPriceData} data from the database.  If the object does
-   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
-   * 
-   * @param csiData The {@link CoolStuffIncPriceData} object to be deleted from the database.
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   * of the requested operation.
-   */
-  public void deleteCSIPriceData(CoolStuffIncPriceData csiData) throws ConfigurationException, DatabaseOperationException;
   
   /**
    * This method should delete the requested {@link CoolStuffIncPriceData} data from the database.  If the object does
@@ -176,17 +154,6 @@ public interface GamesDatabase {
    */
   public void updateMMPriceData(MiniatureMarketPriceData mmData) throws ConfigurationException, DatabaseOperationException;
   
-  /**
-   * This method should delete the provided {@link MiniatureMarketPriceData} data from the database.  If the object does
-   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
-   * 
-   * @param mmData The {@link MiniatureMarketPriceData} object to be deleted from the database.
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   * of the requested operation.
-   */
-  public void deleteMMPriceData(MiniatureMarketPriceData mmData) throws ConfigurationException, DatabaseOperationException;
-
   /**
    * This method should delete the requested {@link MiniatureMarketPriceData} data from the database.  If the object does
    * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
