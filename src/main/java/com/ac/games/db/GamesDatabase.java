@@ -1,5 +1,7 @@
 package com.ac.games.db;
 
+import java.util.List;
+
 import com.ac.games.data.BGGGame;
 import com.ac.games.data.CoolStuffIncPriceData;
 import com.ac.games.data.MiniatureMarketPriceData;
@@ -164,4 +166,34 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public void deleteMMPriceData(long mmID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Custom Query to get the list of all BoardGameGeek bggIDs currently in our index.
+   * 
+   * @return A list of bggIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getBggIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Custom Query to get the list of all CoolStuffInc csiIDs currently in our index.
+   * 
+   * @return A list of csiIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getCSIIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Custom Query to get the list of all Miniature Market mmIDs currently in our index.
+   * 
+   * @return A list of mmIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getMMIDList() throws ConfigurationException, DatabaseOperationException;
 }
