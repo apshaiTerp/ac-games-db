@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.ac.games.data.BGGGame;
 import com.ac.games.data.CoolStuffIncPriceData;
+import com.ac.games.data.Game;
+import com.ac.games.data.GameReltn;
 import com.ac.games.data.MiniatureMarketPriceData;
 import com.ac.games.db.exception.ConfigurationException;
 import com.ac.games.db.exception.DatabaseOperationException;
@@ -196,4 +198,102 @@ public interface GamesDatabase {
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
    */
   public List<Long> getMMIDList() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param gameID The gameID we want to find
+   * 
+   * @return A {@link Game} object, nor null if not found
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public Game getGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link Game} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param game The {@link Game} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertGame(Game game) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the new {@link Game} data into the database.  If the object does not
+   * exist, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param game The {@link Game} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateGame(Game game) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link Game} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param gameID The gameID for this Game in the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link GameReltn} content from the database
+   * 
+   * @param gameID The gameID we want to find
+   * 
+   * @return A {@link GameReltn} object, nor null if not found
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public GameReltn getGameReltn(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link GameReltn} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param gameReltn The {@link GameReltn} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertGameReltn(GameReltn gameReltn) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the new {@link Game} data into the database.  If the object does not
+   * exist, this method can throw a {@link DatabaseOperationException}.  Probably the most common
+   * interaction with this object aside from queries.
+   * 
+   * @param gameReltn The {@link GameReltn} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateGameReltn(GameReltn gameReltn) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method will probably never be used.  It is valid for implementations to not support this
+   * operation.  Adding for CRUD completionism.  It's a syndrome.
+   * 
+   * @param reltnID The reltnID for this GameReltn in the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteGameReltn(long reltnID) throws ConfigurationException, DatabaseOperationException;
+  
 }
