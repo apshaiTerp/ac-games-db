@@ -170,36 +170,6 @@ public interface GamesDatabase {
   public void deleteMMPriceData(long mmID) throws ConfigurationException, DatabaseOperationException;
   
   /**
-   * Custom Query to get the list of all BoardGameGeek bggIDs currently in our index.
-   * 
-   * @return A list of bggIDs, or an empty list if none exist.
-   * 
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   */
-  public List<Long> getBggIDList() throws ConfigurationException, DatabaseOperationException;
-
-  /**
-   * Custom Query to get the list of all CoolStuffInc csiIDs currently in our index.
-   * 
-   * @return A list of csiIDs, or an empty list if none exist.
-   * 
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   */
-  public List<Long> getCSIIDList() throws ConfigurationException, DatabaseOperationException;
-
-  /**
-   * Custom Query to get the list of all Miniature Market mmIDs currently in our index.
-   * 
-   * @return A list of mmIDs, or an empty list if none exist.
-   * 
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   */
-  public List<Long> getMMIDList() throws ConfigurationException, DatabaseOperationException;
-  
-  /**
    * Query to read {@link Game} content from the database
    * 
    * @param gameID The gameID we want to find
@@ -209,7 +179,7 @@ public interface GamesDatabase {
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
    */
-  public Game getGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  public Game readGame(long gameID) throws ConfigurationException, DatabaseOperationException;
   
   /**
    * This method should insert the new {@link Game} data into the database.  If the object already
@@ -257,7 +227,7 @@ public interface GamesDatabase {
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
    */
-  public GameReltn getGameReltn(long gameID) throws ConfigurationException, DatabaseOperationException;
+  public GameReltn readGameReltn(long gameID) throws ConfigurationException, DatabaseOperationException;
   
   /**
    * This method should insert the new {@link GameReltn} data into the database.  If the object already
@@ -296,4 +266,131 @@ public interface GamesDatabase {
    */
   public void deleteGameReltn(long reltnID) throws ConfigurationException, DatabaseOperationException;
   
+  /**
+   * Custom Query to get the list of all BoardGameGeek bggIDs currently in our index.
+   * 
+   * @return A list of bggIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getBggIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Custom Query to get the list of all CoolStuffInc csiIDs currently in our index.
+   * 
+   * @return A list of csiIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getCSIIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Custom Query to get the list of all Miniature Market mmIDs currently in our index.
+   * 
+   * @return A list of mmIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getMMIDList() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Custom Query to get the list of all Game gameIDs currently in our index.
+   * 
+   * @return A list of gameIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getGameIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Custom Query to get the list of all GameReltn reltnIDs currently in our index.
+   * 
+   * @return A list of reltnIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public List<Long> getGameReltnIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public long getMaxBGGGameID() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public long getMaxCSIDataID() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public long getMaxMMDataID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public long getMaxGameID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public int getBGGGameCount() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public int getCSIDataCount() throws ConfigurationException, DatabaseOperationException;
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public int getMMDataCount() throws ConfigurationException, DatabaseOperationException;
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public int getGameCount() throws ConfigurationException, DatabaseOperationException;
 }
