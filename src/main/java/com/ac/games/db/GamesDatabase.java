@@ -283,6 +283,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public List<Long> getCSIIDList() throws ConfigurationException, DatabaseOperationException;
 
@@ -293,6 +294,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public List<Long> getMMIDList() throws ConfigurationException, DatabaseOperationException;
   
@@ -303,6 +305,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public List<Long> getGameIDList() throws ConfigurationException, DatabaseOperationException;
 
@@ -313,6 +316,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public List<Long> getGameReltnIDList() throws ConfigurationException, DatabaseOperationException;
 
@@ -323,6 +327,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public long getMaxBGGGameID() throws ConfigurationException, DatabaseOperationException;
 
@@ -333,6 +338,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public long getMaxCSIDataID() throws ConfigurationException, DatabaseOperationException;
 
@@ -343,6 +349,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public long getMaxMMDataID() throws ConfigurationException, DatabaseOperationException;
   
@@ -353,6 +360,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public long getMaxGameID() throws ConfigurationException, DatabaseOperationException;
   
@@ -363,6 +371,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public int getBGGGameCount() throws ConfigurationException, DatabaseOperationException;
   
@@ -373,8 +382,10 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public int getCSIDataCount() throws ConfigurationException, DatabaseOperationException;
+  
   /**
    * Simple method that allows me to fetch the total count of rows in this table.
    * 
@@ -382,8 +393,10 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public int getMMDataCount() throws ConfigurationException, DatabaseOperationException;
+  
   /**
    * Simple method that allows me to fetch the total count of rows in this table.
    * 
@@ -391,6 +404,71 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public int getGameCount() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryGame The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link BGGGame} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<BGGGame> readAdHocBGGQuery(BGGGame queryGame, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryData The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link CoolStuffIncPriceData} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CoolStuffIncPriceData> readAdHocCSIQuery(CoolStuffIncPriceData queryData, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryData The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link MiniatureMarketPriceData} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MiniatureMarketPriceData> readAdHocMMQuery(MiniatureMarketPriceData queryData, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryGame The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link Game} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<Game> readAdHocGameQuery(Game queryGame, int rowLimit) throws ConfigurationException, DatabaseOperationException;
 }
