@@ -3,8 +3,14 @@ package com.ac.games.db;
 import java.util.List;
 
 import com.ac.games.data.BGGGame;
+import com.ac.games.data.Collection;
+import com.ac.games.data.CollectionItem;
 import com.ac.games.data.CoolStuffIncPriceData;
+import com.ac.games.data.Game;
+import com.ac.games.data.GameReltn;
 import com.ac.games.data.MiniatureMarketPriceData;
+import com.ac.games.data.User;
+import com.ac.games.data.UserDetail;
 import com.ac.games.db.exception.ConfigurationException;
 import com.ac.games.db.exception.DatabaseOperationException;
 
@@ -168,6 +174,103 @@ public interface GamesDatabase {
   public void deleteMMPriceData(long mmID) throws ConfigurationException, DatabaseOperationException;
   
   /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param gameID The gameID we want to find
+   * 
+   * @return A {@link Game} object, nor null if not found
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public Game readGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link Game} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param game The {@link Game} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertGame(Game game) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the new {@link Game} data into the database.  If the object does not
+   * exist, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param game The {@link Game} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateGame(Game game) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link Game} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param gameID The gameID for this Game in the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link GameReltn} content from the database
+   * 
+   * @param gameID The gameID we want to find
+   * 
+   * @return A {@link GameReltn} object, nor null if not found
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public GameReltn readGameReltn(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link GameReltn} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param gameReltn The {@link GameReltn} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertGameReltn(GameReltn gameReltn) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the new {@link Game} data into the database.  If the object does not
+   * exist, this method can throw a {@link DatabaseOperationException}.  Probably the most common
+   * interaction with this object aside from queries.
+   * 
+   * @param gameReltn The {@link GameReltn} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateGameReltn(GameReltn gameReltn) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method will probably never be used.  It is valid for implementations to not support this
+   * operation.  Adding for CRUD completionism.  It's a syndrome.
+   * 
+   * @param reltnID The reltnID for this GameReltn in the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteGameReltn(long reltnID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
    * Custom Query to get the list of all BoardGameGeek bggIDs currently in our index.
    * 
    * @return A list of bggIDs, or an empty list if none exist.
@@ -184,6 +287,7 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public List<Long> getCSIIDList() throws ConfigurationException, DatabaseOperationException;
 
@@ -194,6 +298,423 @@ public interface GamesDatabase {
    * 
    * @throws ConfigurationException Throws this exception if the database connection is not active.
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public List<Long> getMMIDList() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Custom Query to get the list of all Game gameIDs currently in our index.
+   * 
+   * @return A list of gameIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<Long> getGameIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Custom Query to get the list of all GameReltn reltnIDs currently in our index.
+   * 
+   * @return A list of reltnIDs, or an empty list if none exist.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<Long> getGameReltnIDList() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxBGGGameID() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxCSIDataID() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxMMDataID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxGameID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxGameReltnID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public int getBGGGameCount() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public int getCSIDataCount() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public int getMMDataCount() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the total count of rows in this table.
+   * 
+   * @return the count of rows found, which may be 0.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public int getGameCount() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryGame The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link BGGGame} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<BGGGame> readAdHocBGGQuery(BGGGame queryGame, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryData The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link CoolStuffIncPriceData} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CoolStuffIncPriceData> readAdHocCSIQuery(CoolStuffIncPriceData queryData, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryData The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link MiniatureMarketPriceData} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MiniatureMarketPriceData> readAdHocMMQuery(MiniatureMarketPriceData queryData, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Method that allows us to build a dynamic query based on which fields have been provided
+   * in the queryGame object.
+   * 
+   * @param queryGame The data we want to query for.  The only fields filled out in this object should be
+   * fields we want included in our query
+   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
+   * 
+   * @return A List of {@link Game} entries that match the provided criteria
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<Game> readAdHocGameQuery(Game queryGame, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link User} by userName.
+   * 
+   * @param userID The userName for this game.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public User readUser(long userID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link User} by userName.
+   * 
+   * @param userName The userName for this game.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public User readUser(String userName) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link User} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param user The {@link User} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertUser(User user) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the existing {@link User} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param user The {@link User} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateUser(User user) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link User} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param userID The userID for this user detail.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteUser(long userID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxUserID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link UserDetail} by userName.
+   * 
+   * @param userID The userName for this game.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public UserDetail readUserDetail(long userID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link UserDetail} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param userDetail The {@link UserDetail} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertUserDetail(UserDetail userDetail) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the existing {@link UserDetail} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param userDetail The {@link UserDetail} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateUserDetail(UserDetail userDetail) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link UserDetail} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param userID The userID for this user detail.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteUserDetail(long userID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link Collection} by collectionID.
+   * 
+   * @param collectionID The collectionID for this game.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public Collection readCollection(long collectionID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link Collection} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param collection The {@link Collection} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertCollection(Collection collection) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the existing {@link Collection} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param collection The {@link Collection} object to be written to the database.
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateCollection(Collection collection) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link Collection} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param collectionID The collectionID for this game.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteCollection(long collectionID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxCollectionID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link CollectionItem} by itemID.
+   * 
+   * @param itemID The itemID for this game.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public CollectionItem readCollectionItem(long itemID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link CollectionItem} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link CollectionItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertCollectionItem(CollectionItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should update the existing {@link CollectionItem} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link CollectionItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateCollectionItem(CollectionItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link CollectionItem} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param itemID The itemID for this game.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteCollectionItem(long itemID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxCollectionItemID() throws ConfigurationException, DatabaseOperationException;
 }
