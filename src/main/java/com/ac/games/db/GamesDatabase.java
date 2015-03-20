@@ -3,14 +3,20 @@ package com.ac.games.db;
 import java.util.List;
 
 import com.ac.games.data.BGGGame;
+import com.ac.games.data.BGGGameStats;
+import com.ac.games.data.CSIDataStats;
 import com.ac.games.data.Collection;
 import com.ac.games.data.CollectionItem;
 import com.ac.games.data.CoolStuffIncPriceData;
 import com.ac.games.data.Game;
 import com.ac.games.data.GameReltn;
+import com.ac.games.data.MMDataStats;
+import com.ac.games.data.MediaItem;
 import com.ac.games.data.MiniatureMarketPriceData;
+import com.ac.games.data.PlaythruItem;
 import com.ac.games.data.User;
 import com.ac.games.data.UserDetail;
+import com.ac.games.data.WishlistItem;
 import com.ac.games.db.exception.ConfigurationException;
 import com.ac.games.db.exception.DatabaseOperationException;
 
@@ -717,4 +723,223 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public long getMaxCollectionItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link MediaItem}(s) by mediaID.
+   * 
+   * @param mediaID The mediaID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public MediaItem readMediaItemByMediaID(long mediaID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should query the database for the requested {@link MediaItem}(s) by userID.
+   * 
+   * @param userID The userID we want to find all media items for
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MediaItem> readMediaItemsByUserID(long userID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should query the database for the requested {@link MediaItem}(s) by gameID.
+   * 
+   * @param gameID The gameID we want to find all media items for
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MediaItem> readMediaItemsByGameID(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link MediaItem} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link MediaItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertMediaItem(MediaItem item) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should update the existing {@link MediaItem} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link MediaItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateMediaItem(MediaItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link CollectionItem} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param mediaID The mediaID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteMediaItem(long mediaID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxMediaItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link WishlistItem} by wishID.
+   * 
+   * @param wishID The wishID for this wishlist item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public WishlistItem readWishlistItem(long wishID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should insert the new {@link WishlistItem} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link WishlistItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertWishlistItem(WishlistItem item) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should update the existing {@link WishlistItem} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link WishlistItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateWishlistItem(WishlistItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link WishlistItem} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param wishID The wishID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteWishlistItem(long wishID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxWishlistItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link PlaythruItem} by playthruID.
+   * 
+   * @param playthruID The playthruID for this playthrough.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public PlaythruItem readPlaythruItem(long playthruID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should insert the new {@link PlaythruItem} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link PlaythruItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertPlaythruItem(PlaythruItem item) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should update the existing {@link WishlistItem} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link WishlistItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updatePlaythruItem(PlaythruItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link WishlistItem} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param playthruID The playthruID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deletePlaythruItem(long playthruID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxPlaythruItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Delete a stats row by stat type.
+   * 
+   * @param statType The statType we want to remove
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteStatsRow(String statType) throws ConfigurationException, DatabaseOperationException;
+  
+  public BGGGameStats readBGGGameStats() throws ConfigurationException, DatabaseOperationException;
+  
+  public void insertBGGGameStats(BGGGameStats stats) throws ConfigurationException, DatabaseOperationException;
+  
+  public CSIDataStats readCSIDataStats() throws ConfigurationException, DatabaseOperationException;
+  
+  public void insertCSIDataStats(CSIDataStats stats) throws ConfigurationException, DatabaseOperationException;
+  
+  public MMDataStats readMMDataStats() throws ConfigurationException, DatabaseOperationException;
+  
+  public void insertMMDataStats(MMDataStats stats) throws ConfigurationException, DatabaseOperationException;
 }
