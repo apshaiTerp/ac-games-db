@@ -7,9 +7,11 @@ import com.ac.games.data.BGGGameStats;
 import com.ac.games.data.CSIDataStats;
 import com.ac.games.data.Collection;
 import com.ac.games.data.CollectionItem;
+import com.ac.games.data.CompactSearchData;
 import com.ac.games.data.CoolStuffIncPriceData;
 import com.ac.games.data.Game;
 import com.ac.games.data.GameReltn;
+import com.ac.games.data.GameType;
 import com.ac.games.data.MMDataStats;
 import com.ac.games.data.MediaItem;
 import com.ac.games.data.MiniatureMarketPriceData;
@@ -190,6 +192,47 @@ public interface GamesDatabase {
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
    */
   public Game readGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param bggID The bggID this game was based on
+   * 
+   * @return A {@link Game} object, nor null if not found
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public Game readGameByBGGID(long bggID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param gameName The name of the game we want to search for
+   * @param addWildCard Flag to determine if we want to add wild card searching to our search name
+   * @param gameTypeFilter Filter by game type, such as BASE or EXPANSION only.  Default is BASE_AND_COLLECTIBLE
+   * 
+   * @return a List of {@link Game} entries matching this name pattern
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public List<Game> readGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param gameName The name of the game we want to search for
+   * @param addWildCard Flag to determine if we want to add wild card searching to our search name
+   * @param gameTypeFilter Filter by game type, such as BASE or EXPANSION only.  Default is BASE_AND_COLLECTIBLE
+   * @param rowLimit Limit the number of results returned.
+   * 
+   * @return a List of {@link Game} entries matching this name pattern
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public List<CompactSearchData> readGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter, int rowLimit) throws ConfigurationException, DatabaseOperationException;
   
   /**
    * This method should insert the new {@link Game} data into the database.  If the object already
@@ -931,15 +974,197 @@ public interface GamesDatabase {
    */
   public void deleteStatsRow(String statType) throws ConfigurationException, DatabaseOperationException;
   
+  /**
+   * Get Game stats for BGGGame data
+   * 
+   * @return A {@link BGGGameStats} object.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
   public BGGGameStats readBGGGameStats() throws ConfigurationException, DatabaseOperationException;
   
+  /**
+   * Write game stats for BBGGame data
+   * 
+   * @param stats The stats for this data type
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
   public void insertBGGGameStats(BGGGameStats stats) throws ConfigurationException, DatabaseOperationException;
   
+  /**
+   * Get Game stats for CSI data
+   * 
+   * @return A {@link CSIDataStats} object.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
   public CSIDataStats readCSIDataStats() throws ConfigurationException, DatabaseOperationException;
   
+  /**
+   * Write game stats for CSI data
+   * 
+   * @param stats The stats for this data type
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
   public void insertCSIDataStats(CSIDataStats stats) throws ConfigurationException, DatabaseOperationException;
   
+  /**
+   * Get Game stats for MM data
+   * 
+   * @return A {@link MMDataStats} object.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
   public MMDataStats readMMDataStats() throws ConfigurationException, DatabaseOperationException;
   
+  /**
+   * Write game stats for MM data
+   * 
+   * @param stats The stats for this data type
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
   public void insertMMDataStats(MMDataStats stats) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link BGGGame} entry or entries by gameName.
+   * 
+   * @param gameName The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param gameTypeFilter A filter to limit the game types returned 
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<BGGGame> readBGGGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read compact {@link BGGGame} entry or entries by gameName.
+   * 
+   * @param gameName The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param gameTypeFilter A filter to limit the game types returned 
+   * @param resultLimit Limit the number of rows returned
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CompactSearchData> readBGGGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter, int resultLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link BGGGame} entry for items that need review.  This will return a single item that requires review
+   * based on the priority assigned by the reviewType.
+   * 
+   * @param reviewType The review type, typically either 'new' or 'old'
+   * 
+   * @return A single item requiring reivew, or null if no items require review
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public BGGGame readBGGGameForReview(String reviewType) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link CoolStuffIncPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CoolStuffIncPriceData> readCSIDataByTitle(String title, boolean addWildCard) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Read {@link CoolStuffIncPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param rowLimit Limit the number of results returned, primarily for auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CompactSearchData> readCSIDataByTitle(String title, boolean addWildCard, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link CoolStuffIncPriceData} entry for items that need review.  This will return a single item that requires review
+   * based on the priority assigned by the reviewType.
+   * 
+   * @param reviewType The review type, typically either 'new' or 'old'
+   * 
+   * @return A single item requiring reivew, or null if no items require review
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public CoolStuffIncPriceData readCSIDataForReview(String reviewType) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link MiniatureMarketPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MiniatureMarketPriceData> readMMDataByTitle(String title, boolean addWildCard) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link MiniatureMarketPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param rowLimit Limit the number of rows returned, primarily for auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CompactSearchData> readMMDataByTitle(String title, boolean addWildCard, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link MiniatureMarketPriceData} entry for items that need review.  This will return a single item that requires review
+   * based on the priority assigned by the reviewType.
+   * 
+   * @param reviewType The review type, typically either 'new' or 'old'
+   * 
+   * @return A single item requiring reivew, or null if no items require review
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public MiniatureMarketPriceData readMMDataForReview(String reviewType) throws ConfigurationException, DatabaseOperationException;
 }
