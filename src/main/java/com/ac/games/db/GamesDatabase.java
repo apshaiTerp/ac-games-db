@@ -214,8 +214,9 @@ public interface GamesDatabase {
    * 
    * @return a List of {@link Game} entries matching this name pattern
    * 
-   * @throws ConfigurationException
-   * @throws DatabaseOperationException
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public List<Game> readGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter) throws ConfigurationException, DatabaseOperationException;
   
@@ -223,16 +224,16 @@ public interface GamesDatabase {
    * Query to read {@link Game} content from the database
    * 
    * @param gameName The name of the game we want to search for
-   * @param addWildCard Flag to determine if we want to add wild card searching to our search name
-   * @param gameTypeFilter Filter by game type, such as BASE or EXPANSION only.  Default is BASE_AND_COLLECTIBLE
-   * @param rowLimit Limit the number of results returned.
+   * @param primaryPublisher The name of the primary publisher, if available
+   * @param yearPublished The year this game was published.
    * 
    * @return a List of {@link Game} entries matching this name pattern
    * 
-   * @throws ConfigurationException
-   * @throws DatabaseOperationException
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
-  public List<CompactSearchData> readGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  public CompactSearchData readGameFromAutoName(String gameName, String primaryPublisher, int yearPublished) throws ConfigurationException, DatabaseOperationException;
   
   /**
    * This method should insert the new {@link Game} data into the database.  If the object already
@@ -1163,8 +1164,20 @@ public interface GamesDatabase {
    * 
    * @return A single item requiring reivew, or null if no items require review
    * 
-   * @throws ConfigurationException
-   * @throws DatabaseOperationException
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
    */
   public MiniatureMarketPriceData readMMDataForReview(String reviewType) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Searches for all Game Names and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readGameNamesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
 }
