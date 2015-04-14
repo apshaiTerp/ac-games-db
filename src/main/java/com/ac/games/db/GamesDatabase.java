@@ -3,14 +3,22 @@ package com.ac.games.db;
 import java.util.List;
 
 import com.ac.games.data.BGGGame;
+import com.ac.games.data.BGGGameStats;
+import com.ac.games.data.CSIDataStats;
 import com.ac.games.data.Collection;
 import com.ac.games.data.CollectionItem;
+import com.ac.games.data.CompactSearchData;
 import com.ac.games.data.CoolStuffIncPriceData;
 import com.ac.games.data.Game;
 import com.ac.games.data.GameReltn;
+import com.ac.games.data.GameType;
+import com.ac.games.data.MMDataStats;
+import com.ac.games.data.MediaItem;
 import com.ac.games.data.MiniatureMarketPriceData;
+import com.ac.games.data.PlaythruItem;
 import com.ac.games.data.User;
 import com.ac.games.data.UserDetail;
+import com.ac.games.data.WishlistItem;
 import com.ac.games.db.exception.ConfigurationException;
 import com.ac.games.db.exception.DatabaseOperationException;
 
@@ -184,6 +192,48 @@ public interface GamesDatabase {
    * @throws DatabaseOperationException Throws this exception if there are errors during the execution
    */
   public Game readGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param bggID The bggID this game was based on
+   * 
+   * @return A {@link Game} object, nor null if not found
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   */
+  public Game readGameByBGGID(long bggID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param gameName The name of the game we want to search for
+   * @param addWildCard Flag to determine if we want to add wild card searching to our search name
+   * @param gameTypeFilter Filter by game type, such as BASE or EXPANSION only.  Default is BASE_AND_COLLECTIBLE
+   * 
+   * @return a List of {@link Game} entries matching this name pattern
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<Game> readGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Query to read {@link Game} content from the database
+   * 
+   * @param gameName The name of the game we want to search for
+   * @param primaryPublisher The name of the primary publisher, if available
+   * @param yearPublished The year this game was published.
+   * 
+   * @return a List of {@link Game} entries matching this name pattern
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public CompactSearchData readGameFromAutoName(String gameName, String primaryPublisher, int yearPublished) throws ConfigurationException, DatabaseOperationException;
   
   /**
    * This method should insert the new {@link Game} data into the database.  If the object already
@@ -717,4 +767,417 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public long getMaxCollectionItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link MediaItem}(s) by mediaID.
+   * 
+   * @param mediaID The mediaID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public MediaItem readMediaItemByMediaID(long mediaID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should query the database for the requested {@link MediaItem}(s) by userID.
+   * 
+   * @param userID The userID we want to find all media items for
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MediaItem> readMediaItemsByUserID(long userID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should query the database for the requested {@link MediaItem}(s) by gameID.
+   * 
+   * @param gameID The gameID we want to find all media items for
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MediaItem> readMediaItemsByGameID(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should insert the new {@link MediaItem} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link MediaItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertMediaItem(MediaItem item) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should update the existing {@link MediaItem} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link MediaItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateMediaItem(MediaItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link CollectionItem} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param mediaID The mediaID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteMediaItem(long mediaID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxMediaItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link WishlistItem} by wishID.
+   * 
+   * @param wishID The wishID for this wishlist item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public WishlistItem readWishlistItem(long wishID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should insert the new {@link WishlistItem} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link WishlistItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertWishlistItem(WishlistItem item) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should update the existing {@link WishlistItem} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link WishlistItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updateWishlistItem(WishlistItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link WishlistItem} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param wishID The wishID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteWishlistItem(long wishID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxWishlistItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should query the database for the requested {@link PlaythruItem} by playthruID.
+   * 
+   * @param playthruID The playthruID for this playthrough.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public PlaythruItem readPlaythruItem(long playthruID) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should insert the new {@link PlaythruItem} data into the database.  If the object already
+   * exists, this method can throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link PlaythruItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertPlaythruItem(PlaythruItem item) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * This method should update the existing {@link WishlistItem} data into the database.  If the object does
+   * not exist (or no rows were updated), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param item The {@link WishlistItem} object to be written to the database.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void updatePlaythruItem(PlaythruItem item) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * This method should delete the requested {@link WishlistItem} data from the database.  If the object does
+   * not exist (or no rows were deleted), this method may throw a {@link DatabaseOperationException}.
+   * 
+   * @param playthruID The playthruID for this media item.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deletePlaythruItem(long playthruID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Simple method that allows me to fetch the maximum ID value for this column
+   * 
+   * @return the maxID value found, or -1 if unable to find it.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public long getMaxPlaythruItemID() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Delete a stats row by stat type.
+   * 
+   * @param statType The statType we want to remove
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void deleteStatsRow(String statType) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get Game stats for BGGGame data
+   * 
+   * @return A {@link BGGGameStats} object.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public BGGGameStats readBGGGameStats() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Write game stats for BBGGame data
+   * 
+   * @param stats The stats for this data type
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertBGGGameStats(BGGGameStats stats) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get Game stats for CSI data
+   * 
+   * @return A {@link CSIDataStats} object.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public CSIDataStats readCSIDataStats() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Write game stats for CSI data
+   * 
+   * @param stats The stats for this data type
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertCSIDataStats(CSIDataStats stats) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get Game stats for MM data
+   * 
+   * @return A {@link MMDataStats} object.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public MMDataStats readMMDataStats() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Write game stats for MM data
+   * 
+   * @param stats The stats for this data type
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public void insertMMDataStats(MMDataStats stats) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link BGGGame} entry or entries by gameName.
+   * 
+   * @param gameName The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param gameTypeFilter A filter to limit the game types returned 
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<BGGGame> readBGGGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read compact {@link BGGGame} entry or entries by gameName.
+   * 
+   * @param gameName The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param gameTypeFilter A filter to limit the game types returned 
+   * @param resultLimit Limit the number of rows returned
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CompactSearchData> readBGGGameByName(String gameName, boolean addWildCard, GameType gameTypeFilter, int resultLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link BGGGame} entry for items that need review.  This will return a single item that requires review
+   * based on the priority assigned by the reviewType.
+   * 
+   * @param reviewType The review type, typically either 'new' or 'old'
+   * 
+   * @return A single item requiring reivew, or null if no items require review
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public BGGGame readBGGGameForReview(String reviewType) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link CoolStuffIncPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CoolStuffIncPriceData> readCSIDataByTitle(String title, boolean addWildCard) throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Read {@link CoolStuffIncPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param rowLimit Limit the number of results returned, primarily for auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CompactSearchData> readCSIDataByTitle(String title, boolean addWildCard, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link CoolStuffIncPriceData} entry for items that need review.  This will return a single item that requires review
+   * based on the priority assigned by the reviewType.
+   * 
+   * @param reviewType The review type, typically either 'new' or 'old'
+   * 
+   * @return A single item requiring reivew, or null if no items require review
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public CoolStuffIncPriceData readCSIDataForReview(String reviewType) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link MiniatureMarketPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<MiniatureMarketPriceData> readMMDataByTitle(String title, boolean addWildCard) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link MiniatureMarketPriceData} entry or entries by gameName.
+   * 
+   * @param title The name we want to search for
+   * @param addWildCard Flag to indicate whether we should wildcard the ending, to help with tasks like auto-complete.
+   * @param rowLimit Limit the number of rows returned, primarily for auto-complete.
+   * 
+   * @return A List of Games (or an empty list if nothing was found).  Do not return null.
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CompactSearchData> readMMDataByTitle(String title, boolean addWildCard, int rowLimit) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Read {@link MiniatureMarketPriceData} entry for items that need review.  This will return a single item that requires review
+   * based on the priority assigned by the reviewType.
+   * 
+   * @param reviewType The review type, typically either 'new' or 'old'
+   * 
+   * @return A single item requiring reivew, or null if no items require review
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public MiniatureMarketPriceData readMMDataForReview(String reviewType) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Searches for all Game Names and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readGameNamesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
 }
