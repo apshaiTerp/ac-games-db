@@ -1180,4 +1180,39 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public List<String> readGameNamesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Searches for all Game Names and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readBGGGameNamesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Searches for all Game Titles and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readCSITitlesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Searches for all Game Titles and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readMMTitlesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+
+  
 }
