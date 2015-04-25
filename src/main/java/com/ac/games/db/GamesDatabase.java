@@ -1214,5 +1214,15 @@ public interface GamesDatabase {
    */
   public List<String> readMMTitlesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
 
-  
+  /**
+   * Reads the smaller truncated form of the Game object for the provided gameIDs
+   * 
+   * @param gameIDs The GameIDs we want found, tokenized by commas
+   * 
+   * @return A CompactSearchData object for this particular entry
+   * 
+   * @throws ConfigurationException
+   * @throws DatabaseOperationException
+   */
+  public List<CompactSearchData> readGamesCompact(String gameIDs) throws ConfigurationException, DatabaseOperationException;
 }
