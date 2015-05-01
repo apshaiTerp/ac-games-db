@@ -1190,4 +1190,44 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public List<CollectionItem> getNewestCollectionItems(long userID, int topX) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get the entire wishlist for this userID.
+   * 
+   * @param userID The userID we want to get the wishlist for.
+   * 
+   * @return A List of WishlistItem entries
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<WishlistItem> readWishlistForUser(long userID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get all wishlist entries matching this game
+   * 
+   * @param gameID The gameID we want to get the wishlist entries for.
+   * 
+   * @return A List of WishlistItem entries
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<WishlistItem> readWishlistByGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get a single item for some reason
+   * 
+   * @param userID The userID we want to get the wishlist for.
+   * @param gameID The gameID we want to get the wishlist for.
+   * 
+   * @return A List of WishlistItem entries
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public WishlistItem readWishlistItem(long userID, long gameID)  throws ConfigurationException, DatabaseOperationException;
 }
