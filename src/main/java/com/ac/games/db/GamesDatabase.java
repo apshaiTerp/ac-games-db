@@ -17,6 +17,7 @@ import com.ac.games.data.MediaItem;
 import com.ac.games.data.MiniatureMarketPriceData;
 import com.ac.games.data.PlaythruItem;
 import com.ac.games.data.User;
+import com.ac.games.data.UserCollectionStats;
 import com.ac.games.data.UserDetail;
 import com.ac.games.data.WishlistItem;
 import com.ac.games.db.exception.ConfigurationException;
@@ -472,70 +473,6 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public int getGameCount() throws ConfigurationException, DatabaseOperationException;
-  
-  /**
-   * Method that allows us to build a dynamic query based on which fields have been provided
-   * in the queryGame object.
-   * 
-   * @param queryGame The data we want to query for.  The only fields filled out in this object should be
-   * fields we want included in our query
-   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
-   * 
-   * @return A List of {@link BGGGame} entries that match the provided criteria
-   * 
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   * of the requested operation.
-   */
-  public List<BGGGame> readAdHocBGGQuery(BGGGame queryGame, int rowLimit) throws ConfigurationException, DatabaseOperationException;
-  
-  /**
-   * Method that allows us to build a dynamic query based on which fields have been provided
-   * in the queryGame object.
-   * 
-   * @param queryData The data we want to query for.  The only fields filled out in this object should be
-   * fields we want included in our query
-   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
-   * 
-   * @return A List of {@link CoolStuffIncPriceData} entries that match the provided criteria
-   * 
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   * of the requested operation.
-   */
-  public List<CoolStuffIncPriceData> readAdHocCSIQuery(CoolStuffIncPriceData queryData, int rowLimit) throws ConfigurationException, DatabaseOperationException;
-
-  /**
-   * Method that allows us to build a dynamic query based on which fields have been provided
-   * in the queryGame object.
-   * 
-   * @param queryData The data we want to query for.  The only fields filled out in this object should be
-   * fields we want included in our query
-   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
-   * 
-   * @return A List of {@link MiniatureMarketPriceData} entries that match the provided criteria
-   * 
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   * of the requested operation.
-   */
-  public List<MiniatureMarketPriceData> readAdHocMMQuery(MiniatureMarketPriceData queryData, int rowLimit) throws ConfigurationException, DatabaseOperationException;
-
-  /**
-   * Method that allows us to build a dynamic query based on which fields have been provided
-   * in the queryGame object.
-   * 
-   * @param queryGame The data we want to query for.  The only fields filled out in this object should be
-   * fields we want included in our query
-   * @param rowLimit A rowLimit cap for our results, -1 if we want all.
-   * 
-   * @return A List of {@link Game} entries that match the provided criteria
-   * 
-   * @throws ConfigurationException Throws this exception if the database connection is not active.
-   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
-   * of the requested operation.
-   */
-  public List<Game> readAdHocGameQuery(Game queryGame, int rowLimit) throws ConfigurationException, DatabaseOperationException;
   
   /**
    * This method should query the database for the requested {@link User} by userName.
@@ -1180,4 +1117,117 @@ public interface GamesDatabase {
    * of the requested operation.
    */
   public List<String> readGameNamesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Searches for all Game Names and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readBGGGameNamesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Searches for all Game Titles and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readCSITitlesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Searches for all Game Titles and formats them into a searchable String for auto-complete fields
+   * 
+   * @return A List of Sorted Strings for searching
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<String> readMMTitlesForAutoComplete() throws ConfigurationException, DatabaseOperationException;
+
+  /**
+   * Reads the smaller truncated form of the Game object for the provided gameIDs
+   * 
+   * @param gameIDs The GameIDs we want found, tokenized by commas
+   * 
+   * @return A CompactSearchData object for this particular entry
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CompactSearchData> readGamesCompact(String gameIDs) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Generates the Collection Stats for a user's collection.
+   * 
+   * @param userID The UserID we want to generate stats for.
+   * 
+   * @return A UserCollectionStats collection of stats for this user's collection
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public UserCollectionStats readCollectionStats(long userID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Gets the X most recent new items in a user's collection.
+   * 
+   * @param userID The User for our collection
+   * @param topX  The number of most recent games we want returned
+   * 
+   * @return A List of CollectionItem entries for us to consider
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<CollectionItem> getNewestCollectionItems(long userID, int topX) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get the entire wishlist for this userID.
+   * 
+   * @param userID The userID we want to get the wishlist for.
+   * 
+   * @return A List of WishlistItem entries
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<WishlistItem> readWishlistForUser(long userID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get all wishlist entries matching this game
+   * 
+   * @param gameID The gameID we want to get the wishlist entries for.
+   * 
+   * @return A List of WishlistItem entries
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public List<WishlistItem> readWishlistByGame(long gameID) throws ConfigurationException, DatabaseOperationException;
+  
+  /**
+   * Get a single item for some reason
+   * 
+   * @param userID The userID we want to get the wishlist for.
+   * @param gameID The gameID we want to get the wishlist for.
+   * 
+   * @return A List of WishlistItem entries
+   * 
+   * @throws ConfigurationException Throws this exception if the database connection is not active.
+   * @throws DatabaseOperationException Throws this exception if there are errors during the execution
+   * of the requested operation.
+   */
+  public WishlistItem readWishlistItem(long userID, long gameID)  throws ConfigurationException, DatabaseOperationException;
 }
